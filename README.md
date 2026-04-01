@@ -5,7 +5,7 @@ Full-stack personal finance demo:
 - **Backend:** Python, FastAPI, PostgreSQL, cookie sessions, PBKDF2 password hashes
 - **Frontend:** HTML, CSS, JavaScript (vanilla SPA) in `frontend/`
 
-Implemented: **auth** (register/login), **transactions** CRUD, **categories**, **insights** (summary with monthly series and category breakdown), **view-only users** (`read_only` flag; viewer mirrors the primary demo user from your env).
+Implemented: **auth** (register/login), **transactions** CRUD, **categories**, **insights** (summary with monthly series and category breakdown), **view-only users** (`read_only` flag; default viewer **`viewers@example.com`** — see `backend/.env.example`).
 
 ## Local development
 
@@ -25,7 +25,7 @@ Use `--reload-dir app` so only the `app/` package is watched; changes under `scr
 
 `SESSION_SECRET` is required when the API **issues or validates sessions** (login, authenticated routes). Scripts that only import helpers such as `hash_password` can run without it.
 
-Seeded accounts are **not stored in source**: set **`DEMO_PRIMARY_EMAIL`**, **`DEMO_VIEWER_EMAIL`**, **`DEMO_VIEWER_PASSWORD`**, and **`DEMO_SEED_PASSWORD`** in a **gitignored** `backend/.env` (see `backend/.env.example`). Use only on your own machine; never commit those values.
+Portfolio **view-only** demo login (after seeding): **`viewers@example.com`** / **`Viewer1!`** — see **`backend/.env.example`**. Copy to **`backend/.env`**, set **`DEMO_PRIMARY_EMAIL`** and **`DEMO_SEED_PASSWORD`** too, then run the seed script ([backend/README.md](backend/README.md)). Do not commit `.env`.
 
 ### Frontend
 

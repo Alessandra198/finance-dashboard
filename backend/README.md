@@ -15,9 +15,11 @@ uvicorn app.main:app --reload --reload-dir app --port 8000
 
 `--reload-dir app` restricts the file watcher to the `app/` package so seed scripts and other files under `backend/` do not trigger reloads.
 
-**Demo identities are env-only:** there are **no** demo email addresses in the codebase. Copy **`backend/.env.example`** → **`backend/.env`**, fill in **`DEMO_PRIMARY_EMAIL`**, **`DEMO_VIEWER_EMAIL`**, **`DEMO_VIEWER_PASSWORD`**, and **`DEMO_SEED_PASSWORD`**, then run seeds. Keep **`.env` gitignored** (see repo root `.gitignore`).
+**Demo / portfolio env:** copy **`backend/.env.example`** → **`backend/.env`**, set **`DEMO_PRIMARY_EMAIL`** and **`DEMO_SEED_PASSWORD`** for the full-access seeded user, then run seeds. Keep **`.env` gitignored** (repo root `.gitignore`).
 
-**View-only users:** accounts with **`read_only = true`** cannot mutate data; **`GET /api/auth/me`** includes **`read_only`**. **`scripts/seed_demo_user.py`** creates the primary user and a viewer user using those env vars and **mirrors** the primary user’s categories and transactions to the viewer.
+**View-only login (after `seed_demo_user.py`):** email **`viewers@example.com`**, password **`Viewer1!`** — defaults in **`.env.example`** for `DEMO_VIEWER_EMAIL` / `DEMO_VIEWER_PASSWORD`. Change them in `.env` if you like; they must match what you pass to the seed script.
+
+**View-only behavior:** accounts with **`read_only = true`** cannot mutate data; **`GET /api/auth/me`** includes **`read_only`**. **`scripts/seed_demo_user.py`** creates the primary user and the viewer user from env and **mirrors** the primary user’s categories and transactions to the viewer.
 
 If you rename the primary address in env, **update the `users.email` row** in Postgres to match (or start from a fresh DB) before re-seeding.
 
