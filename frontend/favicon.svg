@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 98" role="img" aria-label="Finance plant">
+  <defs>
+    <linearGradient id="pot" x1="49" y1="50" x2="49" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#e6d8c7"/>
+      <stop offset="100%" stop-color="#d7c2ad"/>
+    </linearGradient>
+    <linearGradient id="stem" x1="49" y1="22" x2="49" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7aa98b"/>
+      <stop offset="100%" stop-color="#5b8a72"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9ccbb2"/>
+      <stop offset="100%" stop-color="#6fa584"/>
+    </linearGradient>
+  </defs>
+  <!-- Paint order like the overlay DOM: pot, stem, leaves on top -->
+  <rect
+    x="17"
+    y="50"
+    width="64"
+    height="40"
+    rx="16"
+    ry="16"
+    fill="url(#pot)"
+    stroke="rgba(124,102,78,0.28)"
+    stroke-width="1"
+  />
+  <rect x="45" y="22" width="8" height="28" rx="4" fill="url(#stem)"/>
+  <g stroke="rgba(74,117,94,0.35)" stroke-width="1">
+    <ellipse cx="34" cy="27" rx="14" ry="9" transform="rotate(-24 34 27)" fill="url(#leaf)"/>
+    <ellipse cx="64" cy="27" rx="14" ry="9" transform="rotate(24 64 27)" fill="url(#leaf)"/>
+  </g>
+  <!-- Face on pot -->
+  <ellipse cx="43" cy="67" rx="2" ry="3" fill="#5b6a58"/>
+  <ellipse cx="55" cy="67" rx="2" ry="3" fill="#5b6a58"/>
+  <path
+    d="M42 72 Q49 78 56 72"
+    fill="none"
+    stroke="#5b6a58"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+</svg>

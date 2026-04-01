@@ -1,0 +1,12 @@
+.env
+backend/.env
+frontend/local-config.js
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+.DS_Store
+Thumbs.db

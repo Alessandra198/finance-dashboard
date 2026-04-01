@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+itsdangerous
+psycopg[binary]
+email-validator
+

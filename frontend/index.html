@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Finance Dashboard</title>
+    <link rel="icon" href="favicon.svg?v=1" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=20260327-10" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"
+      integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="toastStack" class="toastStack" aria-live="polite" aria-atomic="true"></div>
+    <div id="reloadOverlay" class="reloadOverlay is-visible" aria-hidden="true">
+      <div class="reloadPlant">
+        <div class="reloadPlantPot">
+          <span class="plantEye plantEye--left" aria-hidden="true"></span>
+          <span class="plantEye plantEye--right" aria-hidden="true"></span>
+          <span class="plantSmile" aria-hidden="true"></span>
+        </div>
+        <div class="reloadStem" aria-hidden="true"></div>
+        <div class="reloadLeaf reloadLeaf--left" aria-hidden="true"></div>
+        <div class="reloadLeaf reloadLeaf--right" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <main class="container">
+      <h1 class="title">Finance Dashboard</h1>
+
+      <nav class="tabs" id="tabs" hidden>
+        <button class="tab" data-view="dashboard">Dashboard</button>
+        <button class="tab" data-view="charts">Charts</button>
+        <span class="spacer"></span>
+        <button class="tab danger" id="logoutBtn">Logout</button>
+      </nav>
+
+      <div class="authScreens" id="authScreens">
+        <section class="card" id="authLoginView">
+          <h2 class="h2">Log in</h2>
+          <p class="authLead muted">Welcome back. Sign in to continue.</p>
+          <form id="loginForm" class="form">
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="email" autocomplete="username" required />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="password" autocomplete="current-password" required />
+            </label>
+            <label class="rememberMe">
+              <input type="checkbox" id="loginRememberMe" />
+              <span>Remember me</span>
+            </label>
+            <button class="button" type="submit">Log in</button>
+          </form>
+          <p class="authSwitch">
+            Need an account?
+            <button type="button" class="linkBtn" id="goRegisterBtn">Register</button>
+          </p>
+        </section>
+
+        <section class="card" id="authRegisterView" hidden>
+          <h2 class="h2">Register</h2>
+          <p class="authLead muted">Create an account to track your finances.</p>
+          <form id="registerForm" class="form">
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="regEmail" autocomplete="email" required />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" id="regPassword" autocomplete="new-password" minlength="8" required />
+            </label>
+            <button class="button" type="submit">Create account</button>
+          </form>
+          <p class="authSwitch">
+            Already have an account?
+            <button type="button" class="linkBtn" id="goLoginBtn">Log in</button>
+          </p>
+        </section>
+
+        <div class="status" id="status" aria-live="polite"></div>
+      </div>
+
+      <section class="card" id="dashboardView" hidden>
+        <div class="row">
+          <h2 class="h2">Transactions</h2>
+          <div class="muted" id="meLabel"></div>
+        </div>
+        <p class="readOnlyBanner" id="readOnlyBanner" hidden>
+          View-only account — you can explore the app but cannot add, edit, or delete transactions.
+        </p>
+
+        <form id="txnForm" class="form">
+          <div class="grid2">
+            <label class="field">
+              <span>Date/Time</span>
+              <input type="datetime-local" id="occurredAt" required />
+            </label>
+            <label class="field">
+              <span>Amount ($; negative = expense)</span>
+              <input type="number" id="amountCents" step="0.01" required />
+            </label>
+          </div>
+          <label class="field">
+            <span>Description</span>
+            <input type="text" id="description" placeholder="Coffee, Salary, Rent..." />
+          </label>
+          <button class="button" type="submit" id="saveTxnBtn">Add transaction</button>
+          <input type="hidden" id="editingTxnId" />
+        </form>
+        <div class="status" id="txnStatus" aria-live="polite"></div>
+
+        <h3 class="h3">Recent</h3>
+        <div class="table" id="txnTable"></div>
+      </section>
+
+      <section class="card" id="chartsView" hidden>
+        <div class="row">
+          <h2 class="h2">Charts</h2>
+          <div class="muted">Income, savings, and spending patterns</div>
+        </div>
+
+        <div class="insightsRange">
+          <div class="insightsRangeFields">
+            <label class="field insightsDateField">
+              <span>From</span>
+              <input type="date" id="insightsFrom" />
+            </label>
+            <label class="field insightsDateField">
+              <span>To</span>
+              <input type="date" id="insightsTo" />
+            </label>
+            <button type="button" class="button button--secondary" id="insightsApplyBtn">Apply range</button>
+          </div>
+          <p class="fineprint">Charts use transactions between these dates (inclusive).</p>
+        </div>
+        <div id="chartsEmpty" class="emptyState" hidden>
+          <div class="emptyStateIcon" aria-hidden="true"></div>
+          <div class="emptyStateTitle">No chart data for this range</div>
+          <div class="emptyStateText">Try a wider range to reveal trends and top spending patterns.</div>
+          <button type="button" class="button button--secondary" id="chartsEmptyResetBtn">Reset to Oct 2025 – Mar 2026</button>
+        </div>
+
+        <div class="chartsGrid">
+          <div class="chartBlock chartBlock--pairRow">
+            <div class="chartBlockTop">
+              <div class="row chartBlockHeader">
+                <h3 class="h3">Income vs expenses</h3>
+                <div class="toggleGroup" role="group" aria-label="Overview chart type">
+                  <button type="button" class="toggleBtn active" data-chart="overview" data-mode="doughnut">
+                    Doughnut
+                  </button>
+                  <button type="button" class="toggleBtn" data-chart="overview" data-mode="stacked">Stacked bar</button>
+                </div>
+              </div>
+            </div>
+            <div class="chartCard">
+              <canvas id="overviewChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chartBlock chartBlock--pairRow">
+            <div class="chartBlockTop">
+              <h3 class="h3">Savings rate by month</h3>
+              <p class="fineprint chartBlockTopNote">
+                Approximate: net ÷ income per month (0% when there is no income).
+              </p>
+            </div>
+            <div class="chartCard">
+              <canvas id="savingsChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chartBlock chartBlock--full">
+            <h3 class="h3">Spending by purchase size</h3>
+            <p class="fineprint">Number of expense transactions in each amount bucket (after date filter).</p>
+            <div class="chartCard">
+              <canvas id="expenseSizeChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chartBlock chartBlock--full">
+            <div class="row chartBlockHeader">
+              <h3 class="h3">Top spending by description</h3>
+              <div class="toggleGroup" role="group" aria-label="Merchant chart type">
+                <button type="button" class="toggleBtn active" data-chart="merchant" data-mode="pie">Pie</button>
+                <button type="button" class="toggleBtn" data-chart="merchant" data-mode="bar">Bar</button>
+              </div>
+            </div>
+            <div class="chartCard chartCard--merchant">
+              <div class="merchantChartPane">
+                <canvas id="merchantChart"></canvas>
+              </div>
+              <div id="merchantLegend" class="merchantLegend" hidden></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js?v=20260327-13"></script>
+  </body>
+</html>
+
