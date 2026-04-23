@@ -90,7 +90,7 @@ def set_session_cookie(response: Any, uid: int) -> None:
     value=token,
     httponly=True,
     samesite="none",
-    secure=True,
+    secure=COOKIE_SECURE,
     path="/",
     max_age=SESSION_MAX_AGE_SECONDS,
 )
