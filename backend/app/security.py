@@ -86,14 +86,14 @@ class SessionUser:
 def set_session_cookie(response: Any, uid: int) -> None:
     token = encode_session(uid)
     response.set_cookie(
-        key=SESSION_COOKIE_NAME,
-        value=token,
-        httponly=True,
-        samesite="lax",
-        secure=COOKIE_SECURE,
-        path="/",
-        max_age=SESSION_MAX_AGE_SECONDS,
-    )
+    key=SESSION_COOKIE_NAME,
+    value=token,
+    httponly=True,
+    samesite="none",
+    secure=True,
+    path="/",
+    max_age=SESSION_MAX_AGE_SECONDS,
+)
 
 
 def clear_session_cookie(response: Any) -> None:
